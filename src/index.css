@@ -41,21 +41,33 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   padding: 10px;
   position: relative;
+  justify-content: space-between;
 }
 
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 15px 10px;
   font-weight: 700;
   font-size: 32px;
   letter-spacing: 2px;
   text-transform: uppercase;
   border-bottom: 1px solid var(--color-border);
-  margin-bottom: 20px;
+}
+
+.header-left,
+.header-right {
+  flex: 1;
+  display: flex;
+}
+
+.header-right {
+  justify-content: flex-end;
+  gap: 15px;
 }
 
 .header .title {
@@ -86,9 +98,10 @@ body {
 }
 
 .header-icon {
-  position: relative;
+  cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   font-size: 24px;
+  user-select: none;
 }
 
 .header-icon:hover {
@@ -129,7 +142,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin: 10px 0 20px 0;
+  margin: 15px 0;
 }
 
 .heart {
@@ -148,7 +161,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   padding: 10px 0;
 }
 
@@ -169,7 +182,6 @@ body {
   font-size: 2rem;
   font-weight: 700;
   border-radius: 4px;
-  /* Classic Wordle rounding */
   text-transform: uppercase;
   transition: background-color 0.4s, border-color 0.4s;
 }
@@ -323,11 +335,6 @@ body {
   transition: all 0.2s;
 }
 
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-}
-
 .toast {
   position: fixed;
   top: 100px;
@@ -393,7 +400,7 @@ body {
 
 /* Keyboard Styles */
 .keyboard {
-  margin: 10px 0 20px;
+  margin: 10px 0 15px;
   user-select: none;
   width: 100%;
 }
@@ -447,15 +454,12 @@ body {
 /* Mobile Responsive Adjustments */
 @media (max-width: 480px) {
   .app-container {
-    padding: 0 5px;
-    height: 100dvh;
-    justify-content: space-between;
+    padding: 0 8px;
   }
 
   .header {
-    padding: 10px 0;
+    padding: 8px 0;
     font-size: 24px;
-    margin-bottom: 5px;
   }
 
   .game-board {
@@ -471,7 +475,7 @@ body {
   }
 
   .keyboard {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .key {
@@ -480,7 +484,28 @@ body {
   }
 
   .key.key-large {
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  .hearts-container {
+    margin: 8px 0;
+  }
+}
+
+@media (max-height: 700px) {
+  .key {
+    height: 40px;
+  }
+
+  .cell {
+    height: 45px;
+    width: 45px;
+    font-size: 1.2rem;
+  }
+
+  .header {
+    font-size: 22px;
+    padding: 5px 0;
   }
 
   .hearts-container {

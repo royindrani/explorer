@@ -105,16 +105,18 @@ function App() {
   return (
     <div className="app-container">
       {/* ... Header ... */}
-      <header className="header" style={{ position: 'relative' }}>
-        <div className="header-icon" style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} data-tooltip="Tutorial">
-          ❓
+      <header className="header">
+        <div className="header-left">
+          <div className="header-icon" onClick={() => setShowInstructions(true)} data-tooltip="Tutorial">
+            ❓
+          </div>
         </div>
         <span className="title">LADDER</span>
-        <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '15px', padding: '0 15px' }}>
-          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={getHint} data-tooltip="Get Hint">
+        <div className="header-right">
+          <div className="header-icon" onClick={getHint} data-tooltip="Get Hint">
             💡
           </div>
-          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={resetGame} data-tooltip="New Game">
+          <div className="header-icon" onClick={resetGame} data-tooltip="New Game">
             🔄
           </div>
         </div>
