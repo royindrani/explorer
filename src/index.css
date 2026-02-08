@@ -398,13 +398,6 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.hidden-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
 /* Keyboard Styles */
 .keyboard {
   margin: 10px 0 15px;
