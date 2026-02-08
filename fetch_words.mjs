@@ -1,8 +1,8 @@
 import fs from 'fs';
 import https from 'https';
 
-// Validation List: Wordle Answers (~2300 words) - Broad enough for solving.
-const validUrl = 'https://raw.githubusercontent.com/alex1770/wordle/main/wordlist_hidden';
+// Validation List: All Guessable Wordle Words (~12,900 words)
+const validUrl = 'https://raw.githubusercontent.com/tabatkins/wordle-list/main/words';
 
 // Generation List: Google 10k Most Common English Words
 // We will filter this to getting the top ~1000 5-letter words.
