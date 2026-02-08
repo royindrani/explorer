@@ -59,11 +59,14 @@ body {
   font-size: 28px;
   letter-spacing: 4px;
   text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.header .title {
   background: linear-gradient(to bottom, #fff, #a1a1aa);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
 }
 
 .btn-play-next {

@@ -110,7 +110,7 @@ function App() {
         <div className="header-icon" style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} title="How to Play Tutorial">
           ❓
         </div>
-        LADDER
+        <span className="title">LADDER</span>
         <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '15px', padding: '0 15px' }}>
           <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={getHint} title="💡 Hint: Get the next word">
             💡
