@@ -508,6 +508,7 @@ body {
   flex: 1;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
   transition: all 0.1s ease;
+  touch-action: manipulation;
 }
 
 .key:hover {

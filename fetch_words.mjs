@@ -3,9 +3,7 @@ import https from 'https';
 
 // Validation List: All Guessable Wordle Words (~12,900 words)
 const validUrl = 'https://raw.githubusercontent.com/tabatkins/wordle-list/main/words';
-
-// Generation List: Google 10k Most Common English Words
-// We will filter this to getting the top ~1000 5-letter words.
+const solutionUrl = 'https://raw.githubusercontent.com/alex1770/wordle/main/wordlist_hidden';
 const commonUrl = 'https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears.txt';
 
 const outputPath = './src/utils/wordList.ts';
@@ -22,32 +20,38 @@ const fetchUrl = (url) => new Promise((resolve, reject) => {
 const run = async () => {
   console.log('Fetching lists...');
   try {
-    const [validData, commonData] = await Promise.all([
+    const [validData, solutionData, commonData] = await Promise.all([
       fetchUrl(validUrl),
+      fetchUrl(solutionUrl),
       fetchUrl(commonUrl)
     ]);
 
-    // Process Valid Words (Wordle List - ~2300)
-    const validWords = validData.split('\n')
-      .map(w => w.trim().toLowerCase())
-      .filter(w => w.length === 5 && /^[a-z]+$/.test(w))
-      .sort();
-
-    // Process Common Words (Google 10k -> Filter 5-letter -> Top 2000)
-    const commonRaw = commonData.split('\n')
+    // Process Wordle Guesses (~12.9k)
+    const allGuesses = validData.split('\n')
       .map(w => w.trim().toLowerCase())
       .filter(w => w.length === 5 && /^[a-z]+$/.test(w));
 
-    // Take top 2000 common words to ensure variety
-    const topCommon = commonRaw.slice(0, 2000);
+    // Process Wordle Solutions (~2.3k)
+    const solutions = solutionData.split('\n')
+      .map(w => w.trim().toLowerCase())
+      .filter(w => w.length === 5 && /^[a-z]+$/.test(w));
 
-    // CRITICAL: Intersection Strategy.
-    // Only keep common words that are ALSO in the official Wordle list.
-    // This strips out proper nouns like "Clark", "Texas", etc. which are common but not valid game words.
-    const commonWords = topCommon.filter(w => validWords.includes(w)).sort();
+    // Process Google 10k Common Words
+    const google10k = commonData.split('\n')
+      .map(w => w.trim().toLowerCase())
+      .filter(w => w.length === 5 && /^[a-z]+$/.test(w));
 
-    // The Valid list determines what is "accepted" as input.
-    // The Common list determines what is chosen for Start/End words.
+    // REFINED DICTIONARY STRATEGY:
+    // 1. Start with the brute-force guess list (~12.9k).
+    // 2. Filter: Only keep if word is EITHER:
+    //    a) In the Google 10k list (identifies "common" words like TAXES).
+    //    b) In the official Wordle Solutions list (ensures answers are playable).
+    const validWords = allGuesses.filter(w =>
+      google10k.includes(w) || solutions.includes(w)
+    ).sort();
+
+    // Generation list: Common words that are also in our valid list.
+    const commonWords = google10k.filter(w => validWords.includes(w)).sort();
 
     const content = `
 export const VALID_WORDS = ${JSON.stringify(validWords, null, 2)};
@@ -55,7 +59,9 @@ export const COMMON_WORDS = ${JSON.stringify(commonWords, null, 2)};
 `;
 
     fs.writeFileSync(outputPath, content);
-    console.log(`Saved ${validWords.length} valid words and ${commonWords.length} highly common start/end words.`);
+    console.log(`Saved ${validWords.length} refined valid words and ${commonWords.length} highly common start/end words.`);
+    console.log(`Example: TAXES included? ${validWords.includes('taxes')}`);
+    console.log(`Example: TUAN included? ${validWords.includes('tuan')}`);
 
   } catch (err) {
     console.error('Error:', err);

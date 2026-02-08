@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { generatePuzzle, isValidWord, findShortestPath } from '../utils/ladderLogic';
 
 
@@ -140,11 +140,12 @@ export const useGameLogic = () => {
     };
 
     // Calculate optimal steps for the current start/end
-    // We can do this on the fly or memoize it. Start/End don't change often.
-    const getOptimalSteps = () => {
+    // Memoize to avoid expensive BFS on every keystroke
+    const optimalSteps = useMemo(() => {
+        if (!startWord || !endWord) return 5;
         const path = findShortestPath(startWord, endWord);
-        return path ? path.length - 1 : 5; // -1 because path includes start
-    };
+        return path ? path.length - 1 : 5;
+    }, [startWord, endWord]);
 
     return {
         startWord,
@@ -159,6 +160,6 @@ export const useGameLogic = () => {
         clearLadder,
         getHint,
         elapsedTime: endTime && startTime ? (endTime - startTime) / 1000 : 0,
-        optimalSteps: getOptimalSteps()
+        optimalSteps
     };
 };
