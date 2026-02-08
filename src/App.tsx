@@ -166,6 +166,9 @@ function App() {
                     COLD ➡️ CORD <span style={{ color: '#538d4e' }}>✔</span><br />
                     <span style={{ color: '#666', fontSize: '0.8em' }}>(Change L to R)</span>
                   </div>
+                  <p style={{ marginTop: '15px', color: 'var(--color-gold)', fontWeight: 600 }}>
+                    💡 Type letters to fill the row and press ENTER to submit!
+                  </p>
                 </>
               )}
               {onboardingStep === 2 && (
@@ -203,7 +206,12 @@ function App() {
             <div className="modal-content">
               <p>Transform the <strong>Start Word</strong> to the <strong>Target Word</strong>.</p>
               <p>You have <strong>5 chances</strong> (❤️).</p>
-              <p>Each step must change exactly <strong>one letter</strong>.</p>
+              <p><strong>Instructions:</strong></p>
+              <ul style={{ textAlign: 'left', margin: '10px 0', paddingLeft: '20px' }}>
+                <li>Type letters to fill a row.</li>
+                <li>Press <strong>ENTER</strong> to submit your word.</li>
+                <li>Each step must change exactly <strong>one letter</strong>.</li>
+              </ul>
               <div style={{ background: '#333', padding: '10px', borderRadius: '8px', margin: '10px 0' }}>
                 <p><strong>Example:</strong></p>
                 <p>COLD ➡️ CORD ➡️ CARD ➡️ WARD ➡️ WARM</p>
