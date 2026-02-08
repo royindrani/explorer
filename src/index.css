@@ -390,3 +390,100 @@ body {
   text-transform: uppercase;
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Keyboard Styles */
+.keyboard {
+  margin: 10px 0 20px;
+  user-select: none;
+  width: 100%;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.key {
+  font-family: inherit;
+  font-weight: 700;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  height: 58px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  background-color: #818384;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  flex: 1;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.1s ease;
+}
+
+.key:hover {
+  filter: brightness(1.1);
+}
+
+.key.key-large {
+  flex: 1.5;
+  font-size: 11px;
+}
+
+.key.correct {
+  background-color: var(--color-success);
+}
+
+.key.used {
+  background-color: #313132;
+  color: #818384;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0 5px;
+    height: 100dvh;
+    justify-content: space-between;
+  }
+
+  .header {
+    padding: 10px 0;
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  .game-board {
+    gap: 4px;
+    padding: 5px 0;
+  }
+
+  .cell {
+    width: 18%;
+    aspect-ratio: 1;
+    font-size: 1.4rem;
+    height: auto;
+  }
+
+  .keyboard {
+    margin-bottom: 10px;
+  }
+
+  .key {
+    height: 48px;
+    font-size: 0.8rem;
+  }
+
+  .key.key-large {
+    font-size: 10px;
+  }
+
+  .hearts-container {
+    margin: 5px 0;
+  }
+}

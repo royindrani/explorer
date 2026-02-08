@@ -317,12 +317,63 @@ function App() {
         )}
       </div>
 
-      <div className="keyboard-placeholder" style={{ textAlign: 'center', color: '#666', fontSize: 12 }}>
-        Type to play • Enter to submit
-      </div>
+      <Keyboard
+        onKey={(key) => {
+          if (status !== 'playing') return;
+          if (key === 'ENTER') {
+            submitRow();
+          } else if (key === 'DELETE') {
+            const currentWord = ladder[currentRow] || '';
+            handleInput(currentWord.slice(0, -1));
+          } else if (ladder[currentRow].length < 5) {
+            handleInput(ladder[currentRow] + key.toLowerCase());
+          }
+        }}
+        ladder={ladder.slice(0, currentRow)}
+        targetWord={endWord}
+      />
     </div>
   );
 }
+
+const Keyboard = ({ onKey, ladder, targetWord }: { onKey: (key: string) => void, ladder: string[], targetWord: string }) => {
+  const rows = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'DELETE']
+  ];
+
+  // Calculate statuses
+  const keyStatuses: Record<string, 'correct' | 'used'> = {};
+  ladder.forEach(word => {
+    word.split('').forEach((char, i) => {
+      const upperChar = char.toUpperCase();
+      if (targetWord[i] === char) {
+        keyStatuses[upperChar] = 'correct';
+      } else if (!keyStatuses[upperChar]) {
+        keyStatuses[upperChar] = 'used';
+      }
+    });
+  });
+
+  return (
+    <div className="keyboard">
+      {rows.map((row, i) => (
+        <div key={i} className="keyboard-row">
+          {row.map(key => (
+            <button
+              key={key}
+              className={`key ${key.length > 1 ? 'key-large' : ''} ${keyStatuses[key] || ''}`}
+              onClick={() => onKey(key)}
+            >
+              {key === 'DELETE' ? '⌫' : key}
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Row = ({ word, targetWord, fixed, active, hasError, status, style, isTargetRow }: { word: string, targetWord?: string, fixed?: boolean, active?: boolean, hasError?: boolean, status?: string; style?: any; isTargetRow?: boolean }) => {
   const letters = word.split('');
