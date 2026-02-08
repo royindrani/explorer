@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useGameLogic } from './hooks/useGameLogic';
 import confetti from 'canvas-confetti';
 import './index.css';
@@ -23,6 +23,25 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus hidden input for mobile keyboard
+  useEffect(() => {
+    const focusInput = () => {
+      if (status === 'playing' && !showInstructions && !showOnboarding) {
+        hiddenInputRef.current?.focus();
+      }
+    };
+
+    focusInput();
+    window.addEventListener('touchstart', focusInput);
+    window.addEventListener('click', focusInput);
+
+    return () => {
+      window.removeEventListener('touchstart', focusInput);
+      window.removeEventListener('click', focusInput);
+    };
+  }, [status, showInstructions, showOnboarding]);
 
   // Show onboarding on mount
   useEffect(() => {
@@ -125,6 +144,34 @@ function App() {
       <div className="hearts-container">
         {hearts.map((h, i) => <span key={i} className={`heart ${h === '🤍' ? 'popped' : ''}`}>{h}</span>)}
       </div>
+
+      <input
+        ref={hiddenInputRef}
+        type="text"
+        className="hidden-input"
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
+        value=""
+        onChange={(e) => {
+          const char = e.target.value.slice(-1).toLowerCase();
+          const currentWord = ladder[currentRow] || '';
+          if (/^[a-z]$/.test(char) && currentWord.length < 5) {
+            handleInput(currentWord + char);
+          }
+          // Reset input so it can keep receiving changes
+          e.target.value = '';
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            submitRow();
+          } else if (e.key === 'Backspace') {
+            const currentWord = ladder[currentRow] || '';
+            handleInput(currentWord.slice(0, -1));
+          }
+        }}
+      />
 
       {showOnboarding && (
         <div className="modal-overlay">

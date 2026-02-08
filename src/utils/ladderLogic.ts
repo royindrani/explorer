@@ -57,32 +57,38 @@ export const generatePuzzle = (minDist: number = 3, maxDist: number = 5): { star
         attempts++;
         start = sourceList[Math.floor(Math.random() * sourceList.length)];
 
-        // We want an end word that is between minDist and maxDist steps away.
-        // We can use a modified BFS that tracks distance.
-
+        // Modified BFS: Prioritize common-word neighbors to find an "intuitive" path
         let queue: { word: string, dist: number }[] = [{ word: start, dist: 0 }];
         let visited = new Set<string>([start]);
         let candidates: string[] = [];
 
-        // BFS up to maxDist
         let idx = 0;
         while (idx < queue.length) {
             const { word, dist } = queue[idx];
             idx++;
 
             if (dist >= minDist && dist <= maxDist) {
-                // Check if this candidate is in our "Common" list
                 if (sourceList.includes(word)) {
                     candidates.push(word);
                 }
             }
 
             if (dist < maxDist) {
-                for (const w of WORD_LIST) {
-                    if (!visited.has(w) && isOneOff(word, w)) {
-                        visited.add(w);
-                        queue.push({ word: w, dist: dist + 1 });
-                    }
+                // Find all possible one-off words
+                const neighbors = WORD_LIST.filter(w => !visited.has(w) && isOneOff(word, w));
+
+                // Sort neighbors: Put common words first to increase likelihood of a "common" path
+                neighbors.sort((a, b) => {
+                    const aCommon = sourceList.includes(a);
+                    const bCommon = sourceList.includes(b);
+                    if (aCommon && !bCommon) return -1;
+                    if (!aCommon && bCommon) return 1;
+                    return 0;
+                });
+
+                for (const w of neighbors) {
+                    visited.add(w);
+                    queue.push({ word: w, dist: dist + 1 });
                 }
             }
         }

@@ -398,6 +398,13 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.hidden-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
 /* Keyboard Styles */
 .keyboard {
   margin: 10px 0 15px;
@@ -454,12 +461,13 @@ body {
 /* Mobile Responsive Adjustments */
 @media (max-width: 480px) {
   .app-container {
-    padding: 0 8px;
+    padding: 0 5px;
   }
 
   .header {
-    padding: 8px 0;
+    padding: 10px 0;
     font-size: 24px;
+    margin-bottom: 5px;
   }
 
   .game-board {
@@ -475,20 +483,29 @@ body {
   }
 
   .keyboard {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
+    padding: 0 4px;
+  }
+
+  .keyboard-row {
+    gap: 4px;
+    margin-bottom: 8px;
   }
 
   .key {
-    height: 48px;
-    font-size: 0.8rem;
+    height: 62px;
+    /* Stretched for better touch */
+    font-size: 0.95rem;
+    border-radius: 6px;
   }
 
   .key.key-large {
-    font-size: 9px;
+    font-size: 11px;
+    flex: 1.8;
   }
 
   .hearts-container {
-    margin: 8px 0;
+    margin: 5px 0;
   }
 }
 
