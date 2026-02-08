@@ -363,6 +363,10 @@ function App() {
         </div>
       )}
 
+      <div className="game-instruction">
+        Type letters • Press ENTER to submit
+      </div>
+
       <Keyboard
         canSubmit={ladder[currentRow]?.length === 5}
         onKey={(key) => {
