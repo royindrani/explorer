@@ -484,27 +484,39 @@ body {
 
   .keyboard {
     margin-bottom: 20px;
-    padding: 0 2px;
+    padding: 0 4px;
   }
 
   .keyboard-row {
-    gap: 3px;
+    gap: 4px;
     margin-bottom: 8px;
+    width: 100%;
+    display: flex;
   }
 
   .key {
     height: 75px;
-    /* Extremely tall as per reference */
     font-size: 0.95rem;
     border-radius: 4px;
     background-color: #818384;
     font-weight: 700;
+    flex: 1;
+    /* Unit width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .key-spacer {
+    flex: 0.5;
+    /* Offset row 2 */
+    pointer-events: none;
   }
 
   .key.key-large {
     font-size: 11px;
-    flex: 2.2;
-    /* Match the reference's wider Enter/Delete */
+    flex: 1.5;
+    /* Enter/Delete proportions */
   }
 
   .hearts-container {

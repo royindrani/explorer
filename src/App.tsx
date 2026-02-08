@@ -409,6 +409,8 @@ const Keyboard = ({ onKey, ladder, targetWord }: { onKey: (key: string) => void,
     <div className="keyboard">
       {rows.map((row, i) => (
         <div key={i} className="keyboard-row">
+          {/* Add spacer for Row 2 to match standard QWERTY shift */}
+          {i === 1 && <div className="key-spacer" />}
           {row.map(key => (
             <button
               key={key}
@@ -418,6 +420,7 @@ const Keyboard = ({ onKey, ladder, targetWord }: { onKey: (key: string) => void,
               {key === 'DELETE' ? '⌫' : key}
             </button>
           ))}
+          {i === 1 && <div className="key-spacer" />}
         </div>
       ))}
     </div>
