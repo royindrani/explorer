@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useGameLogic } from './hooks/useGameLogic';
 import confetti from 'canvas-confetti';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import './index.css';
 
 function App() {
@@ -377,6 +378,7 @@ function App() {
           }
         }}
       />
+      <SpeedInsights />
     </div>
   );
 }
