@@ -465,43 +465,44 @@ body {
   }
 
   .header {
-    padding: 10px 0;
+    padding: 8px 10px;
     font-size: 24px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
   }
 
   .game-board {
-    gap: 4px;
-    padding: 5px 0;
+    gap: 8px;
+    padding: 10px 0;
+    flex-grow: 2;
+    /* Prioritize the grid */
   }
 
   .cell {
-    width: 18%;
-    aspect-ratio: 1;
-    font-size: 1.4rem;
-    height: auto;
+    width: 62px;
+    height: 62px;
+    font-size: 1.8rem;
   }
 
   .keyboard {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     padding: 0 4px;
   }
 
   .keyboard-row {
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: 5px;
+    margin-bottom: 6px;
     width: 100%;
     display: flex;
   }
 
   .key {
-    height: 75px;
-    font-size: 0.95rem;
+    height: 58px;
+    /* Professional normalized height */
+    font-size: 1.25rem;
     border-radius: 4px;
     background-color: #818384;
     font-weight: 700;
     flex: 1;
-    /* Unit width */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -509,18 +510,16 @@ body {
 
   .key-spacer {
     flex: 0.5;
-    /* Offset row 2 */
     pointer-events: none;
   }
 
   .key.key-large {
-    font-size: 11px;
+    font-size: 0.75rem;
     flex: 1.5;
-    /* Enter/Delete proportions */
   }
 
   .hearts-container {
-    margin: 5px 0;
+    margin: 4px 0;
   }
 }
 
