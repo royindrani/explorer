@@ -483,25 +483,28 @@ body {
   }
 
   .keyboard {
-    margin-bottom: 15px;
-    padding: 0 4px;
+    margin-bottom: 20px;
+    padding: 0 2px;
   }
 
   .keyboard-row {
-    gap: 4px;
+    gap: 3px;
     margin-bottom: 8px;
   }
 
   .key {
-    height: 62px;
-    /* Stretched for better touch */
+    height: 75px;
+    /* Extremely tall as per reference */
     font-size: 0.95rem;
-    border-radius: 6px;
+    border-radius: 4px;
+    background-color: #818384;
+    font-weight: 700;
   }
 
   .key.key-large {
     font-size: 11px;
-    flex: 1.8;
+    flex: 2.2;
+    /* Match the reference's wider Enter/Delete */
   }
 
   .hearts-container {
