@@ -363,10 +363,6 @@ function App() {
         </div>
       )}
 
-      <div className="game-instruction">
-        Type letters • Press ENTER to submit
-      </div>
-
       <Keyboard
         canSubmit={ladder[currentRow]?.length === 5}
         onKey={(key) => {
@@ -380,32 +376,17 @@ function App() {
             handleInput(ladder[currentRow] + key.toLowerCase());
           }
         }}
-        ladder={ladder.slice(0, currentRow)}
-        targetWord={endWord}
       />
     </div>
   );
 }
 
-const Keyboard = ({ onKey, ladder, targetWord, canSubmit }: { onKey: (key: string) => void, ladder: string[], targetWord: string, canSubmit?: boolean }) => {
+const Keyboard = ({ onKey, canSubmit }: { onKey: (key: string) => void, canSubmit?: boolean }) => {
   const rows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
     ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'DELETE']
   ];
-
-  // Calculate statuses
-  const keyStatuses: Record<string, 'correct' | 'used'> = {};
-  ladder.forEach(word => {
-    word.split('').forEach((char, i) => {
-      const upperChar = char.toUpperCase();
-      if (targetWord[i] === char) {
-        keyStatuses[upperChar] = 'correct';
-      } else if (!keyStatuses[upperChar]) {
-        keyStatuses[upperChar] = 'used';
-      }
-    });
-  });
 
   return (
     <div className="keyboard">
@@ -416,7 +397,7 @@ const Keyboard = ({ onKey, ladder, targetWord, canSubmit }: { onKey: (key: strin
           {row.map(key => (
             <button
               key={key}
-              className={`key ${key.length > 1 ? 'key-large' : ''} ${key === 'ENTER' && canSubmit ? 'pulse-enter' : ''} ${keyStatuses[key] || ''}`}
+              className={`key ${key.length > 1 ? 'key-large' : ''} ${key === 'ENTER' && canSubmit ? 'pulse-enter' : ''}`}
               onClick={() => onKey(key)}
             >
               {key === 'DELETE' ? '⌫' : key}

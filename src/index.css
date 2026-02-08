@@ -475,17 +475,6 @@ body {
   padding: 10px;
 }
 
-.game-instruction {
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--color-text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  opacity: 0.8;
-}
-
 /* Keyboard Styles */
 .keyboard {
   margin: 10px 0 15px;
@@ -530,14 +519,6 @@ body {
   font-size: 11px;
 }
 
-.key.correct {
-  background-color: var(--color-success);
-}
-
-.key.used {
-  background-color: #313132;
-  color: #818384;
-}
 
 /* Mobile Responsive Adjustments */
 @media (max-width: 480px) {
