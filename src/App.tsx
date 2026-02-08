@@ -25,6 +25,11 @@ function App() {
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
+  // Show onboarding on mount
+  useEffect(() => {
+    setShowOnboarding(true);
+  }, []);
+
   // Delay result modal to let animation play
   useEffect(() => {
     if (status === 'won' || status === 'lost') {
@@ -102,15 +107,15 @@ function App() {
     <div className="app-container">
       {/* ... Header ... */}
       <header className="header" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)}>
+        <div style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} title="How to Play">
           ❓
         </div>
         LADDER
         <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '15px', padding: '0 15px' }}>
-          <div style={{ cursor: 'pointer', fontSize: 20 }} onClick={getHint} title="Get Hint">
+          <div style={{ cursor: 'pointer', fontSize: 20 }} onClick={getHint} title="Get Hint (💡)">
             💡
           </div>
-          <div style={{ cursor: 'pointer', fontSize: 20 }} onClick={clearLadder} title="Restart Level">
+          <div style={{ cursor: 'pointer', fontSize: 20 }} onClick={clearLadder} title="Restart Level (🔄)">
             🔄
           </div>
         </div>
