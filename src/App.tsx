@@ -23,6 +23,8 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackSaved, setFeedbackSaved] = useState(false);
 
   // Show onboarding on mount
   useEffect(() => {
@@ -40,8 +42,24 @@ function App() {
   }, [status]);
 
   const finishOnboarding = () => {
-    // No need to set localStorage if we show every time
     setShowOnboarding(false);
+  };
+
+  const handleFeedback = (rating: string) => {
+    const feedback = {
+      puzzle: `${startWord} -> ${endWord}`,
+      rating,
+      timestamp: new Date().toISOString()
+    };
+    const existing = JSON.parse(localStorage.getItem('ladder_feedback') || '[]');
+    existing.push(feedback);
+    localStorage.setItem('ladder_feedback', JSON.stringify(existing));
+    setFeedbackSaved(true);
+    // Auto-close feedback after a short delay
+    setTimeout(() => {
+      setShowFeedback(false);
+      setFeedbackSaved(false);
+    }, 1500);
   };
 
   // Handle physical keyboard
@@ -303,7 +321,10 @@ function App() {
                 </div>
               )}
 
-              <button onClick={resetGame} className={status === 'won' ? 'btn-play-next' : 'btn-try-again'} style={{
+              <button onClick={() => {
+                resetGame();
+                setShowFeedback(true); // Show feedback after reset/closing result
+              }} className={status === 'won' ? 'btn-play-next' : 'btn-try-again'} style={{
                 padding: '12px 24px',
                 fontSize: '18px',
                 border: 'none',
@@ -319,7 +340,23 @@ function App() {
         )}
       </div>
 
+      {showFeedback && (
+        <div className="modal-overlay feedback-overlay">
+          <div className="modal feedback-modal">
+            <h3>How was the difficulty?</h3>
+            <div className="feedback-options">
+              <button className="btn-feedback" onClick={() => handleFeedback('too_easy')}>Too Easy 😌</button>
+              <button className="btn-feedback" onClick={() => handleFeedback('just_right')}>Just Right 🙂</button>
+              <button className="btn-feedback" onClick={() => handleFeedback('too_hard')}>Too Hard 🤯</button>
+            </div>
+            {feedbackSaved && <div className="feedback-saved">Feedback saved! Thank you.</div>}
+            <button className="btn-close-link" onClick={() => setShowFeedback(false)}>Skip</button>
+          </div>
+        </div>
+      )}
+
       <Keyboard
+        canSubmit={ladder[currentRow]?.length === 5}
         onKey={(key) => {
           if (status !== 'playing') return;
           if (key === 'ENTER') {
@@ -338,7 +375,7 @@ function App() {
   );
 }
 
-const Keyboard = ({ onKey, ladder, targetWord }: { onKey: (key: string) => void, ladder: string[], targetWord: string }) => {
+const Keyboard = ({ onKey, ladder, targetWord, canSubmit }: { onKey: (key: string) => void, ladder: string[], targetWord: string, canSubmit?: boolean }) => {
   const rows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -367,7 +404,7 @@ const Keyboard = ({ onKey, ladder, targetWord }: { onKey: (key: string) => void,
           {row.map(key => (
             <button
               key={key}
-              className={`key ${key.length > 1 ? 'key-large' : ''} ${keyStatuses[key] || ''}`}
+              className={`key ${key.length > 1 ? 'key-large' : ''} ${key === 'ENTER' && canSubmit ? 'pulse-enter' : ''} ${keyStatuses[key] || ''}`}
               onClick={() => onKey(key)}
             >
               {key === 'DELETE' ? '⌫' : key}

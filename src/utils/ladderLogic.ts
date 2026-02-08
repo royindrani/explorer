@@ -43,7 +43,7 @@ export const findShortestPath = (start: string, end: string): string[] | null =>
 };
 
 // BFS to find all words at exact distance N from start
-export const generatePuzzle = (minDist: number = 3, maxDist: number = 5): { start: string; end: string } => {
+export const generatePuzzle = (minDist: number = 2, maxDist: number = 4): { start: string; end: string } => {
     let start = '';
     let end = '';
     let found = false;
