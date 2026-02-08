@@ -5,6 +5,8 @@ import https from 'https';
 const validUrl = 'https://raw.githubusercontent.com/tabatkins/wordle-list/main/words';
 const solutionUrl = 'https://raw.githubusercontent.com/alex1770/wordle/main/wordlist_hidden';
 const commonUrl = 'https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears.txt';
+// Profanity List: LDNOOBW English List
+const profanityUrl = 'https://raw.githubusercontent.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/en';
 
 const outputPath = './src/utils/wordList.ts';
 
@@ -20,11 +22,19 @@ const fetchUrl = (url) => new Promise((resolve, reject) => {
 const run = async () => {
   console.log('Fetching lists...');
   try {
-    const [validData, solutionData, commonData] = await Promise.all([
+    const [validData, solutionData, commonData, profanityData] = await Promise.all([
       fetchUrl(validUrl),
       fetchUrl(solutionUrl),
-      fetchUrl(commonUrl)
+      fetchUrl(commonUrl),
+      fetchUrl(profanityUrl)
     ]);
+
+    // Process Profanity List
+    const profanity = new Set(
+      profanityData.split('\n')
+        .map(w => w.trim().toLowerCase())
+        .filter(w => w.length > 0)
+    );
 
     // Process Wordle Guesses (~12.9k)
     const allGuesses = validData.split('\n')
@@ -46,8 +56,9 @@ const run = async () => {
     // 2. Filter: Only keep if word is EITHER:
     //    a) In the Google 10k list (identifies "common" words like TAXES).
     //    b) In the official Wordle Solutions list (ensures answers are playable).
+    // 3. CRITICAL: Remove any words that are in the profanity list.
     const validWords = allGuesses.filter(w =>
-      google10k.includes(w) || solutions.includes(w)
+      (google10k.includes(w) || solutions.includes(w)) && !profanity.has(w)
     ).sort();
 
     // Generation list: Common words that are also in our valid list.
@@ -59,9 +70,12 @@ export const COMMON_WORDS = ${JSON.stringify(commonWords, null, 2)};
 `;
 
     fs.writeFileSync(outputPath, content);
-    console.log(`Saved ${validWords.length} refined valid words and ${commonWords.length} highly common start/end words.`);
-    console.log(`Example: TAXES included? ${validWords.includes('taxes')}`);
-    console.log(`Example: TUAN included? ${validWords.includes('tuan')}`);
+    console.log(`Saved ${validWords.length} refined and sanitized valid words.`);
+    console.log(`Saved ${commonWords.length} highly common start/end words.`);
+
+    // Safety verification
+    console.log(`Sanity Check - TAXES included? ${validWords.includes('taxes')}`);
+    console.log(`Sanity Check - TUAN included? ${validWords.includes('tuan')}`);
 
   } catch (err) {
     console.error('Error:', err);
