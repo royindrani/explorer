@@ -120,6 +120,8 @@ export const useGameLogic = () => {
         setCurrentRow(0);
         setStatus('playing');
         setErrorMsg(null);
+        setStartTime(Date.now());
+        setEndTime(0);
     };
 
     const getHint = () => {

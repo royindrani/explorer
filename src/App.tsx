@@ -107,15 +107,15 @@ function App() {
     <div className="app-container">
       {/* ... Header ... */}
       <header className="header" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} title="How to Play">
+        <div className="header-icon" style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} title="How to Play Tutorial">
           ❓
         </div>
         LADDER
         <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '15px', padding: '0 15px' }}>
-          <div style={{ cursor: 'pointer', fontSize: 20 }} onClick={getHint} title="Get Hint (💡)">
+          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={getHint} title="💡 Hint: Get the next word">
             💡
           </div>
-          <div style={{ cursor: 'pointer', fontSize: 20 }} onClick={clearLadder} title="Restart Level (🔄)">
+          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={clearLadder} title="🔄 Restart: Clear your current path and reset timer">
             🔄
           </div>
         </div>
@@ -247,53 +247,52 @@ function App() {
               <h2>{status === 'won' ? '🎉 Splendid!' : '😔 Game Over'}</h2>
 
               {status === 'won' && (
-                <div style={{ margin: '15px 0', textAlign: 'left', background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '8px' }}>
-                  <div style={{ marginBottom: '10px', fontSize: '18px', textAlign: 'center' }}>
-                    <strong>{startWord}</strong> ➡️ <strong>{endWord}</strong>
+                <div className="status-card">
+                  <div style={{ marginBottom: '16px', fontSize: '20px', textAlign: 'center', fontWeight: 600 }}>
+                    {startWord} ➡️ {endWord}
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span>Your Moves:</span> <strong>{currentRow + 1}</strong>
+                  <div className="status-row">
+                    <span>Your Moves</span> <strong>{currentRow + 1}</strong>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span>Optimal Moves:</span> <strong>{optimalSteps}</strong>
+                  <div className="status-row">
+                    <span>Optimal Path</span> <strong>{optimalSteps}</strong>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>Time:</span> <strong>{elapsedTime.toFixed(1)}s</strong>
+                  <div className="status-row">
+                    <span>Solve Time</span> <strong>{elapsedTime.toFixed(1)}s</strong>
                   </div>
-                  <div style={{ marginTop: '15px', fontStyle: 'italic', textAlign: 'center', color: '#ffd700' }}>
+                  <div style={{ marginTop: '20px', fontStyle: 'italic', textAlign: 'center', color: 'var(--color-gold)', fontSize: '0.95em' }}>
                     "{getVictoryQuote()}"
                   </div>
                 </div>
               )}
 
               {status === 'lost' && (
-                <div style={{ margin: '15px 0', textAlign: 'left', background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '8px' }}>
-                  <p style={{ marginBottom: '10px' }}>
-                    The target word was: <br />
-                    <strong style={{ fontSize: '24px', color: '#ef4444', display: 'block', marginTop: '5px' }}>{endWord.toUpperCase()}</strong>
+                <div className="status-card">
+                  <p style={{ marginBottom: '12px', color: 'var(--color-text-dim)' }}>
+                    The target word was:
                   </p>
+                  <strong style={{ fontSize: '28px', color: 'var(--color-error)', display: 'block', marginBottom: '20px', letterSpacing: '2px' }}>
+                    {endWord.toUpperCase()}
+                  </strong>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9em', color: '#aaa' }}>
-                    <span>Rarity:</span>
-                    <strong style={{ color: '#fff' }}>
+                  <div className="status-row">
+                    <span>Rarity</span>
+                    <span className="rarity-badge">
                       {(() => {
-                        // Simple rarity heuristic
                         const rareLetters = 'jqxzvk';
                         let cost = 0;
                         for (const char of endWord) if (rareLetters.includes(char)) cost++;
                         return cost > 1 ? 'Legendary 🦄' : cost > 0 ? 'Rare 💎' : 'Common 📄';
                       })()}
-                    </strong>
+                    </span>
                   </div>
 
-                  <div style={{ marginTop: '15px', fontStyle: 'italic', textAlign: 'center', color: '#b59f3b' }}>
+                  <div style={{ marginTop: '24px', fontStyle: 'italic', textAlign: 'center', color: 'var(--color-warning)', opacity: 0.8 }}>
                     "{(() => {
                       const failQuotes = [
                         "Failure is just a stepping stone to success.",
                         "Don't watch the clock; do what it does. Keep going.",
-                        "You miss 100% of the shots you don't take.",
                         "Fall seven times, stand up eight.",
-                        "The only real mistake is the one from which we learn nothing.",
                         "It's not over until you win!",
                         "Keep calm and climb on. 🪜"
                       ];
@@ -303,11 +302,9 @@ function App() {
                 </div>
               )}
 
-              <button onClick={resetGame} style={{
+              <button onClick={resetGame} className={status === 'won' ? 'btn-play-next' : 'btn-try-again'} style={{
                 padding: '12px 24px',
                 fontSize: '18px',
-                background: status === 'won' ? '#538d4e' : '#b59f3b',
-                color: 'white',
                 border: 'none',
                 borderRadius: '8px',
                 cursor: 'pointer',
