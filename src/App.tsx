@@ -106,15 +106,15 @@ function App() {
     <div className="app-container">
       {/* ... Header ... */}
       <header className="header" style={{ position: 'relative' }}>
-        <div className="header-icon" style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} title="How to Play Tutorial">
+        <div className="header-icon" style={{ position: 'absolute', left: 0, cursor: 'pointer', padding: '0 15px' }} onClick={() => setShowInstructions(true)} data-tooltip="Tutorial">
           ❓
         </div>
         <span className="title">LADDER</span>
         <div style={{ position: 'absolute', right: 0, display: 'flex', gap: '15px', padding: '0 15px' }}>
-          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={getHint} title="💡 Hint: Get the next word">
+          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={getHint} data-tooltip="Get Hint">
             💡
           </div>
-          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={resetGame} title="🔄 New Game: Start a fresh puzzle with new words">
+          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={resetGame} data-tooltip="New Game">
             🔄
           </div>
         </div>
