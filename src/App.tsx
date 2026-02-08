@@ -14,7 +14,6 @@ function App() {
     handleInput,
     submitRow,
     resetGame,
-    clearLadder,
     getHint,
     elapsedTime,
     optimalSteps
@@ -115,7 +114,7 @@ function App() {
           <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={getHint} title="💡 Hint: Get the next word">
             💡
           </div>
-          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={clearLadder} title="🔄 Restart: Clear your current path and reset timer">
+          <div className="header-icon" style={{ cursor: 'pointer', fontSize: 22 }} onClick={resetGame} title="🔄 New Game: Start a fresh puzzle with new words">
             🔄
           </div>
         </div>
